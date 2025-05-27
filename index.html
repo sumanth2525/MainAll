@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sumanth’s Web Apps – All in One Place</title>
+
+<!-- FONTS -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ----------  ROOT  ---------- */
+:root{
+  --radius:1.4rem;
+  --clr-primary:#0f172a;   /* text / button */
+  --clr-card-border:#ececec;
+  --clr-card-bg:#ffffff;
+  --clr-shadow:rgba(0,0,0,.08);
+}
+*,*::before,*::after{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Poppins',system-ui,Arial,sans-serif;
+  background:#ffffff;
+  color:var(--clr-primary);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ----------  HERO  ---------- */
+.hero{
+  min-height:45vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:4rem 8vw;
+  background:linear-gradient(135deg,#e6f7ff 0%,#fff7f9 100%);
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:'';
+  position:absolute;inset:0;
+  background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><circle cx="100" cy="500" r="170" fill="rgba(255,255,255,.5)"/><circle cx="650" cy="50" r="110" fill="rgba(255,255,255,.4)"/></svg>') no-repeat;
+  background-size:cover;pointer-events:none;
+  animation: drift 30s linear infinite;
+}
+@keyframes drift{to{transform:translateX(-20%)}}
+
+.hero h1{
+  font-size:clamp(2.2rem,6vw,3.5rem);
+  font-weight:700;
+  margin:0 0 .5rem;
+}
+.hero p{
+  max-width:500px;
+  margin:0 0 2rem;
+  color:#334155;
+}
+.btn-primary{
+  display:inline-block;
+  padding:.85rem 2.25rem;
+  font-weight:600;
+  border:none;
+  border-radius:var(--radius);
+  background:var(--clr-primary);
+  color:#fff;
+  cursor:pointer;
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 20px rgba(0,0,0,.12);
+}
+
+/* ----------  CARD GRID  ---------- */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:2rem;
+  padding:4rem 8vw;
+}
+
+/* CARD */
+.card{
+  position:relative;
+  padding:2rem 1.5rem 1.25rem;
+  border-radius:var(--radius);
+  background:var(--clr-card-bg);
+  border:1px solid var(--clr-card-border);
+  box-shadow:0 4px 16px var(--clr-shadow);
+  overflow:hidden;
+  isolation:isolate;
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 24px var(--clr-shadow);
+}
+.card::before{
+  content:'';
+  position:absolute;inset:0;
+  border-radius:inherit;
+  background:radial-gradient(circle at top right,var(--accent) 0%,rgba(255,255,255,0) 70%);
+  opacity:.8;
+  mix-blend-mode:multiply;
+  pointer-events:none;
+  transition:opacity .4s ease;
+}
+.card:hover::before{opacity:1;}
+.card h3{margin:0 0 .25rem;font-weight:600;font-size:1.35rem}
+.card p{margin:0 0 1.5rem;font-size:.9rem;color:#475569}
+.card button{
+  padding:.6rem 1.4rem;
+  border:none;
+  border-radius:var(--radius);
+  font-weight:600;
+  background:var(--accent);
+  color:#000;
+  cursor:pointer;
+  transition:filter .25s ease,transform .25s ease;
+}
+.card button:hover{
+  filter:brightness(115%);
+  transform:translateY(-2px);
+}
+
+/* ----------  COMING‑SOON  ---------- */
+.coming-soon{
+  text-align:center;
+  padding:4rem 1rem 6rem;
+  font-size:clamp(2rem,6vw,3rem);
+  font-weight:700;
+  background:linear-gradient(90deg,#0f172a,#0068ff,#ff1654,#ff9f0a,#0f172a);
+  background-size:600%;
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:gradientShift 8s linear infinite;
+}
+@keyframes gradientShift{
+  0%{background-position:0%}
+  100%{background-position:600%}
+}
+
+/* ----------  UTIL  ---------- */
+.visually-hidden{position:absolute!important;clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>All My Web Apps in One Place</h1>
+  <p>These web apps creating in 2 hours using gpt</p>
+  <button class="btn-primary" onclick="document.querySelector('.cards').scrollIntoView({behavior:'smooth'})">
+    Explore Apps
+  </button>
+</header>
+
+<main>
+  <section class="cards" id="appGrid">
+    <!-- Cards injected by JS -->
+  </section>
+
+  <!-- Animated banner -->
+  <div class="coming-soon">More Projects Coming Soon…</div>
+</main>
+
+<script>
+/* -------  DATA  ------- */
+const apps = [
+  {
+    name:'BMI Calculator',
+    url:'https://sumanth2525.github.io/BMICalculator/',
+    tagline:'Instantly check your Body Mass Index',
+    color:'#e11d48'          // rose‑600
+  },
+  {
+    name:'Job Portals Hub',
+    url:'https://sumanth2525.github.io/JobPortals/Index.html',
+    tagline:'All job portals on one page',
+    color:'#0A66C2'          // LinkedIn blue
+  },
+  {
+    name:'Portfolio Template',
+    url:'https://sumanth2525.github.io/PortfolioTemplate/Index.html',
+    tagline:'Clean, responsive portfolio starter',
+    color:'#6366f1'          // indigo‑500
+  }
+];
+
+/* -------  BUILD CARDS  ------- */
+const grid = document.getElementById('appGrid');
+
+apps.forEach(app=>{
+  const card       = document.createElement('article');
+  card.className   = 'card';
+  card.style.setProperty('--accent',app.color);
+
+  card.innerHTML = `
+    <h3>${app.name}</h3>
+    <p>${app.tagline}</p>
+    <button>Visit</button>
+  `;
+  card.querySelector('button').addEventListener('click',()=>window.open(app.url,'_blank','noopener'));
+
+  grid.appendChild(card);
+});
+</script>
+
+</body>
+</html>
