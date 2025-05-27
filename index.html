@@ -43,7 +43,7 @@ body{
   position:absolute;inset:0;
   background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><circle cx="100" cy="500" r="170" fill="rgba(255,255,255,.5)"/><circle cx="650" cy="50" r="110" fill="rgba(255,255,255,.4)"/></svg>') no-repeat;
   background-size:cover;pointer-events:none;
-  animation: drift 30s linear infinite;
+  animation:drift 30s linear infinite;
 }
 @keyframes drift{to{transform:translateX(-20%)}}
 
@@ -150,7 +150,7 @@ body{
 
 <header class="hero">
   <h1>All My Web Apps in One Place</h1>
-  <p>These web apps creating in 2 hours using gpt</p>
+  <p>Quick links to the projects I’m hosting on GitHub Pages. Pick one and dive in.</p>
   <button class="btn-primary" onclick="document.querySelector('.cards').scrollIntoView({behavior:'smooth'})">
     Explore Apps
   </button>
@@ -185,14 +185,14 @@ const apps = [
     url:'https://sumanth2525.github.io/PortfolioTemplate/Index.html',
     tagline:'Clean, responsive portfolio starter',
     color:'#6366f1'          // indigo‑500
-  }
+  },
   {
     name:'Time Difference Finder',
     url:'https://sumanth2525.github.io/TimeZ/Index.html',
     tagline:'Compare time zones in seconds',
     color:'#ff914d'          // orange‑400
   }
-   ];
+];
 
 /* -------  BUILD CARDS  ------- */
 const grid = document.getElementById('appGrid');
