@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Sumanth’s Web Apps – All in One Place</title>
 
-  <!-- Font -->
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Chart.js & Firebase SDKs -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Firebase SDKs (compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
@@ -58,12 +57,12 @@
   }
   .online h2{font-size:clamp(1.8rem,4.5vw,2.4rem);margin:0 0 2rem;font-weight:700;}
   .presence-wrapper{
-    display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:2rem;
+    display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;
     max-width:1100px;margin-inline:auto;
   }
-  .chart-wrap{flex:1 1 320px;max-width:400px;min-width:260px;}
   .stats{
-    flex:1 1 300px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;
+    flex:1 1 300px;
   }
   .stat{
     background:var(--clr-card-bg);border:1px solid var(--clr-card-border);
@@ -116,7 +115,7 @@
   <!-- HERO -->
   <header class="hero">
     <h1>WEB APPS WITH AI PROMPT</h1>
-    <p>All Web Apps Created Using CHAT GPT IN 2 HOURS.</p>
+    <p>All Web Apps Created Using CHAT GPT IN 2 HOURS.</p>
     <button class="btn-primary" onclick="document.querySelector('.cards').scrollIntoView({behavior:'smooth'})">
       Explore Apps
     </button>
@@ -126,7 +125,6 @@
   <section class="online">
     <h2>Online Now</h2>
     <div class="presence-wrapper">
-      <div class="chart-wrap"><canvas id="deviceChart"></canvas></div>
       <div class="stats">
         <div class="stat"><h3 id="totalCount">0</h3><span>Total Users</span></div>
         <div class="stat"><h3 id="desktopCount">0</h3><span>Desktop</span></div>
@@ -136,19 +134,20 @@
     </div>
   </section>
 
-  <!-- APP GRID -->
+  <!-- APPS GRID -->
   <main>
     <section class="cards" id="appGrid"></section>
     <div class="coming-soon">More Projects Coming Soon…</div>
   </main>
 
+  <!-- MAIN SCRIPT -->
   <script>
   /* ---------------- APP CARD DATA ---------------- */
   const apps = [
-    {name:'BMI Calculator',   url:'https://sumanth2525.github.io/BMICalculator/',           tagline:'Instantly check your Body Mass Index',  color:'#e11d48'},
-    {name:'Job Portals Hub',  url:'https://sumanth2525.github.io/JobPortals/Index.html',   tagline:'All job portals on one page',           color:'#0A66C2'},
+    {name:'BMI Calculator',    url:'https://sumanth2525.github.io/BMICalculator/',           tagline:'Instantly check your Body Mass Index',  color:'#e11d48'},
+    {name:'Job Portals Hub',   url:'https://sumanth2525.github.io/JobPortals/Index.html',    tagline:'All job portals on one page',           color:'#0A66C2'},
     {name:'Portfolio Template',url:'https://sumanth2525.github.io/PortfolioTemplate/Index.html',tagline:'Clean, responsive portfolio starter',color:'#6366f1'},
-    {name:'Time Difference Finder',url:'https://sumanth2525.github.io/TimeZ/Index.html',   tagline:'Compare time zones in seconds',         color:'#ff914d'}
+    {name:'Time Difference Finder',url:'https://sumanth2525.github.io/TimeZ/Index.html',     tagline:'Compare time zones in seconds',         color:'#ff914d'}
   ];
 
   /* -------- BUILD CARD GRID -------- */
@@ -167,7 +166,22 @@
     grid.appendChild(card);
   });
 
-  /* -------- ONLINE PRESENCE -------- */
+  /* -------- FIREBASE CONFIG -------- */
+  const firebaseConfig = {
+    apiKey: "AIzaSyD8Cd14nPWGEUqb7M2gpf11ispVMMcwd6U",
+    authDomain: "mainall.firebaseapp.com",
+    databaseURL: "https://mainall-default-rtdb.firebaseio.com",
+    projectId: "mainall",
+    storageBucket: "mainall.appspot.com",
+    messagingSenderId: "1016460223476",
+    appId: "1:1016460223476:web:d83bfcd6b475807a8b4fa1"
+  };
+
+  /* -------- INITIALISE FIREBASE -------- */
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  /* -------- DEVICE TYPE UTILITY -------- */
   function getDeviceType(){
     const ua = navigator.userAgent.toLowerCase();
     if(/mobi|android|iphone|ipod/.test(ua)) return 'mobile';
@@ -175,75 +189,37 @@
     return 'desktop';
   }
 
-  /* 🔑  REPLACE WITH REAL FIREBASE CREDENTIALS */
-  const firebaseConfig = {
-    apiKey:'YOUR_API_KEY',
-    authDomain:'YOUR_AUTH_DOMAIN',
-    databaseURL:'YOUR_DATABASE_URL',
-    projectId:'YOUR_PROJECT_ID',
-    storageBucket:'YOUR_STORAGE_BUCKET',
-    messagingSenderId:'YOUR_MSG_ID',
-    appId:'YOUR_APP_ID'
-  };
-
-  const usingPlaceholders = Object.values(firebaseConfig)
-    .some(v=>String(v).startsWith('YOUR_'));
-
-  /* ---- Chart Helper ---- */
-  const ctx = document.getElementById('deviceChart').getContext('2d');
-  const deviceChart = new Chart(ctx,{
-    type:'doughnut',
-    data:{
-      labels:['Desktop','Tablet','Mobile'],
-      datasets:[{data:[0,0,0],backgroundColor:[
-        'rgba(99,102,241,0.9)',
-        'rgba(14,165,233,0.9)',
-        'rgba(255,145,77,0.9)'
-      ],borderWidth:0,hoverOffset:4}]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,cutout:'55%',
-      plugins:{legend:{display:false}}
-    }
-  });
-
+  /* -------- RENDER COUNTS -------- */
   function renderCounts({desktop,tablet,mobile}){
-    const total = desktop+tablet+mobile;
-    totalCount.textContent   = total;
+    totalCount.textContent   = desktop + tablet + mobile;
     desktopCount.textContent = desktop;
     tabletCount.textContent  = tablet;
     mobileCount.textContent  = mobile;
-    deviceChart.data.datasets[0].data = [desktop,tablet,mobile];
-    deviceChart.update();
   }
 
-  if(!usingPlaceholders){
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+  /* -------- PRESENCE HANDLING -------- */
+  firebase.database().ref('.info/connected').on('value', snap => {
+    if (!snap.val()) return;                // not yet online
 
-    const deviceType = getDeviceType();
-    const presenceRef = db.ref('presence')
-      .push({device:deviceType,ts:firebase.database.ServerValue.TIMESTAMP});
-    presenceRef.onDisconnect().remove();
-
-    db.ref('presence').on('value',snap=>{
-      const data = snap.val()||{};
-      let desktop=0,tablet=0,mobile=0;
-      Object.values(data).forEach(({device})=>{
-        if(device==='desktop') desktop++;
-        else if(device==='tablet') tablet++;
-        else if(device==='mobile') mobile++;
-      });
-      renderCounts({desktop,tablet,mobile});
+    const presenceRef = db.ref('presence').push({
+      device: getDeviceType(),
+      ts: firebase.database.ServerValue.TIMESTAMP
     });
+    presenceRef.onDisconnect().remove();    // auto‑cleanup on close
+  });
 
-  }else{
-    /* Demo – count this visitor only */
-    const counts={desktop:0,tablet:0,mobile:0};
-    counts[getDeviceType()] = 1;
-    renderCounts(counts);
-    console.warn('⚠️  Demo mode – add Firebase keys for real‑time counts.');
-  }
+  /* -------- LIVE COUNTER LISTENER -------- */
+  db.ref('presence').on('value', snap => {
+    let desktop=0, tablet=0, mobile=0;
+    snap.forEach(child => {
+      switch (child.val().device){
+        case 'desktop': desktop++; break;
+        case 'tablet' : tablet++ ; break;
+        case 'mobile' : mobile++ ; break;
+      }
+    });
+    renderCounts({desktop,tablet,mobile});
+  });
   </script>
 </body>
 </html>
